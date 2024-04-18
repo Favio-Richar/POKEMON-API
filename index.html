@@ -1,0 +1,45 @@
+
+<html lang="es"> 
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuración de la vista en dispositivos -->
+    <title>PokeAPI Ejemplo</title> 
+    <style>
+        #pokemon-info {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokedex :) </h1> 
+    <label for="pokemon-id">Ingresa el Numero de Pokemon:</label>
+    <input type="text" id="pokemon-id">
+    <button onclick="fetchPokemon()">Obtener datos!!</button>
+    <div id="pokemon-info"></div> <!-- Contenedor donde se mostrará la información del Pokémon -->
+
+    <script>
+        async function fetchPokemon() { <!-- Función asincrónica para obtener información del Pokémon -->
+            const pokemonId = document.getElementById('pokemon-id').value; 
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`); 
+            const data = await response.json(); 
+
+            const pokemonInfo = document.getElementById('pokemon-info'); 
+            pokemonInfo.innerHTML = `
+                <h2>${data.name}</h2> <!-- Muestra el nombre del Pokémon -->
+                <img src="${data.sprites.front_default}" alt="${data.name}"> <!-- Muestra la imagen del Pokémon -->
+                <p>Height: ${data.height}</p> <!-- Muestra la altura del Pokémon -->
+                <p>Weight: ${data.weight}</p> <!-- Muestra el peso del Pokémon -->
+                <p>Type: ${data.types.map(type => type.type.name).join(', ')}</p><!-- Muestra los tipos del Pokémon -->
+                <h3>Abilities:</h3> <!-- Encabezado para las habilidades del Pokémon -->
+                <ul>
+                    ${data.abilities.map(ability => `<li>${ability.ability.name}</li>`).join('')} 
+                </ul>
+            `;
+        }
+    </script> 
+</body>
+</html>
